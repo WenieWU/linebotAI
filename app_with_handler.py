@@ -39,9 +39,27 @@ if channel_access_token is None:
     print('Specify LINE_CHANNEL_ACCESS_TOKEN as environment variable.')
     sys.exit(1)
 
+import TextSendMessage
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
+line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=event.message.text)
+)
+line_bot_api.reply_message(
+            event.reply_token,
+            ImageSendMessage(
+                    original_content_url = image,
+                    preview_image_url = image)
+)
+message = []
 
+message.append( TextSendMessage( text = '回傳訊息' ) )
+message.append( ImageSendMessage(
+            original_content_url = '圖片網址',
+            preview_image_url = '圖片網址' ) )
+
+line_bot_api.reply_message( event.reply_token, message )
 
 @app.route("/callback", methods=['POST'])
 def callback():
